@@ -6,6 +6,7 @@ const Fruit = require('./models/fruit');
 const ejs = require('ejs');
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
+const Smoothie = require('./models/smoothie');
 
 mongoose.connect('mongodb://localhost/fruits', {useNewUrlParser : true})
 .then(()=> console.log('Mongodb is running'),(err)=> console.log(err) )
@@ -16,6 +17,76 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
 
+//SMOOTHIE INDEX
+app.get('/smoothies', (req, res) => {
+  Smoothie.find()
+  .sort('-createdAt')
+  .populate({ path: 'fruits', select: 'name' })
+    .then(smoothies => {
+      res.render('smoothies/index', { smoothies })
+    })
+})
+
+// smooties new 
+app.get('/smoothies/new', (req, res) => {
+  Fruit.find()
+    .then(fruits => {
+      res.render('smoothies/new', { fruits })
+    })
+})
+//smoothie post 
+app.post('/smoothies', (req, res) => {
+  let newSmoothie = new Smoothie(req.body)
+if (!Array.isArray(req.body.smoothieFruitsArray)){
+  newSmoothie.fruits.push(req.body.smoothieFruitsArray)
+}else{
+  req.body.smoothieFruitsArray.forEach(fruit => {
+    newSmoothie.fruits.push(fruit)
+  })
+}
+  newSmoothie.save()
+  res.redirect('/smoothies');
+})
+//smoothie SHOW
+app.get('/smoothies/:index', (req, res) => {
+  Smoothie.findById(req.params.index)
+  .populate({ path: 'fruits', select: 'name' })
+  .then((smoothie)=>{
+    res.render('smoothies/show', {smoothie})
+  })
+})
+
+// smoothie EDIT
+app.get('/smoothies/:index/edit', (req, res) => {
+  let fruits= []
+   Fruit.find()
+  .then(f => {
+    fruits= f
+  })
+  Smoothie.findById(req.params.index)
+    .then(smoothie => {
+      res.render('smoothies/edit', { smoothie,fruits }) //Fruit.find()
+    })
+})
+
+// smoothie DELETE
+app.delete('/smoothies/:index', (req, res) => {
+  Smoothie.findByIdAndDelete(req.params.index)
+    .then(() => {
+      res.redirect('/smoothies');
+    })
+})
+
+//smoothie PUT
+app.put('/smoothies/:index', (req, res) => {
+  let updated = req.body
+  Smoothie.findByIdAndUpdate(req.params.index, updated)
+    .then(smoothie => {
+      res.redirect(`/smoothies/${smoothie._id}`);
+    })
+})
+
+/////////////////////
 //INDEX
 app.get('/fruits', (req, res) => {
   

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="utf-8">
+     <link rel="stylesheet" href="/app.css">
+     <title>New Smoothie</title>
+   </head>
+   <body>
+     <h1>New Smoothie Page</h1>
+     <form action="/smoothies" method="POST">
+       <label for="name">Name</label>
+       <input type="text" name="name" id="name"/>
+       <br>
+       <% fruits.forEach(fruit => { %>
+         <input type="checkbox" name="smoothieFruitsArray" value="<%= fruit._id %>"><%= fruit.name %><br>
+       <% }) %>
+       <input type="submit" value="Create Smoothie">
+       
+     </form>
+   </body>
+ </html>	

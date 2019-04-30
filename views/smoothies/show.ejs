@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/app.css">
+    <title></title>
+  </head>
+  <body>
+  
+    <h1>  <nav>
+      <a href="/smoothies/">BACK</a>
+    </nav>
+    <%= smoothie.name %> Smoothie Recipe</h1>
+    
+<h3>Ingerediants </h3>
+
+
+ <ul>
+  <% smoothie.fruits.forEach(fruit => { %>
+  <li>
+   <%= fruit.name %>
+    </li>
+<% }) %>
+</ul>
+
+
+    <h3>Directions </h3>
+ <ol>
+ <li>
+1. Mix all fruits in blender with ice and liqued like orange juice or milk.
+ </li>
+  <li>
+2. put it in glass and drink it *****DON't use straw DON't ruin the environment****** 
+</li>
+ </ol>
+
+
+      <a href="/smoothies/<%= smoothie._id  %>/edit">EDIT</a>
+
+  </body>
+</html>

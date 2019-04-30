@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="utf-8">
+     <link rel="stylesheet" href="/app.css">
+     <title>New Smoothie</title>
+   </head>
+   <body>
+     
+     <h1>  <nav>
+      <a href="/smoothies/<%= smoothie._id %>">BACK</a>
+    </nav>
+    New Smoothie Page</h1>
+
+    <form action="/smoothies/<%= smoothie._id %>?_method=put" method="POST">
+       <label for="name">Name</label>
+       <input type="text" name="name" id="name" value = "<%= smoothie.name %>"/>
+       <br>
+       
+       <% fruits.forEach(fruit => { %>
+      <input type="checkbox" name="fruits" value="<%= fruit._id %>"
+      <%= smoothie.fruits.includes(fruit._id)? 'checked' : '' %>/> 
+      <%= fruit.name %> <br>
+       <% }) %>
+       <input type="submit" value="Update Smoothie Recipe">
+     </form>
+   </body>
+ </html>	
+
+
